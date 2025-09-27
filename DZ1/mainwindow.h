@@ -27,6 +27,10 @@ private slots:
 
     void on_PB_start_clicked();
 
+    void on_RB_yes_clicked();
+
+    void on_RB_no_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
