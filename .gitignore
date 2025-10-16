@@ -38,6 +38,7 @@ Debug/
 1/1/x64
 1/x64
 DZ1/.build
+DZ2/.build
 # Build artifacts
 *.obj
 *.exe
