@@ -44,7 +44,7 @@ timeValue = 0;
 lastLapTime=0;
 }
 
-void StopWatch::circle()
+QString StopWatch::circle()
 {
     lapCount++;
     double circle = timeValue-lastLapTime;
@@ -53,7 +53,8 @@ void StopWatch::circle()
     QString text=QString("Круг %1, время: %2 сек")
                        .arg(lapCount)
                        .arg(circle, 0, 'f', 1);
-   emit timecircle(text);
+
+    return text;
 }
 
 bool StopWatch::runing()

@@ -18,7 +18,7 @@ public slots:
     void stop();
      void updateTime();
     void clear();
-     void circle();
+     QString circle();
     bool runing();
 private:
     QTimer *time;

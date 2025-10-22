@@ -15,10 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(stopwatch, &StopWatch::timeUpdated, this, [this](QString t){
         ui->label_time->setText(t);
     });
-    connect(stopwatch, &StopWatch::timecircle, this, [this](QString t){
-        ui->text_log->append(t);
-    });
+
 ui->PB_circle->setEnabled(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +63,7 @@ void MainWindow::on_PB_Clear_clicked()
 void MainWindow::on_PB_circle_clicked()
 {
 
-        stopwatch->circle();
 
+ui->text_log->append(stopwatch->circle());
 }
 
