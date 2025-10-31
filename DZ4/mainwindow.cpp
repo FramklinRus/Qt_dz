@@ -59,6 +59,7 @@ connect(dataBase, &DataBase::sig_SendStatusRequest, this, &MainWindow::ReceiveSt
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete model;
 }
 
 /*!
@@ -132,29 +133,28 @@ dataBase->RequestToDB(typeRequest);};
  * \param widget
  * \param typeRequest
  */
-void MainWindow::ScreenDataFromDB(QTableWidget *widget, int typeRequest)
+void MainWindow::ScreenDataFromDB(QTableWidget *widget)
 {
 
+        if (!widget) return;
 
-    switch (typeRequest) {
 
-    case requestAllFilms:
-        tbWid = widget;
-        ui->verticalLayout_3->addWidget(tbWid);
-         break;
-    case requestComedy:
-        tbWid = widget;
-        ui->verticalLayout_3->addWidget(tbWid);
-        break;
-    case requestHorrors:
-             tbWid = widget;
-       ui->verticalLayout_3->addWidget(tbWid);
-        break;
+    model = new QStandardItemModel(widget->rowCount(), widget->columnCount(), this);
 
-    default:
-        break;
+    for (int c = 0; c < widget->columnCount(); ++c) {
+        model->setHeaderData(c, Qt::Horizontal, widget->horizontalHeaderItem(c)->text());
     }
 
+    for (int r = 0; r < widget->rowCount(); ++r) {
+        for (int c = 0; c < widget->columnCount(); ++c) {
+            QTableWidgetItem *item = widget->item(r, c);
+            if (item)
+                model->setItem(r, c, new QStandardItem(item->text()));
+        }
+    }
+
+    ui->tableView->setModel(model);
+    ui->tableView->resizeColumnsToContents();
 }
 /*!
  * \brief Метод изменяет стотояние формы в зависимости от статуса подключения к БД
@@ -186,8 +186,9 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 void MainWindow::on_pb_clear_clicked()
 {
 
-    tbWid->clear();
-    tbWid->setRowCount(0);
+   ui->tableView->setModel(nullptr);
+   ui->tableView->reset();
+    dataBase->ClearTable();
 }
 void MainWindow::ReceiveStatusRequestToDB(QSqlError err)
 {

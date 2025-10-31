@@ -12,6 +12,8 @@ tableWidget = new QTableWidget();
 DataBase::~DataBase()
 {
     delete dataBase;
+    delete query;
+    delete model;
 }
 
 /*!
@@ -79,9 +81,13 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
     void DataBase::RequestToDB( int requestType)
     {
 
+        if (requestType==1)
+        {
         model->setTable("film");
         model->select();
-
+        }
+        else
+        {
         QString genre = (requestType == requestComedy) ? "Comedy" : "Horror";
 
 
@@ -93,7 +99,7 @@ void DataBase::DisconnectFromDataBase(QString nameDb)
             "WHERE c.name = '" + genre + "'",
             *dataBase
             );
-
+        }
 emit sig_SendStatusRequest(query->lastError( ));
     }
 
@@ -107,9 +113,9 @@ QSqlError DataBase::GetLastError()
 
 void DataBase::ReadAnswerFromDB(int requestType)
 {
-    /*
-     * Используем оператор switch для разделения запросов
-    */
+    tableWidget->clear();             // 💡 очистка старого содержимого
+    tableWidget->setRowCount(0);
+    tableWidget->setColumnCount(2);
 
     switch (requestType) {
     //Для наших запросов вид таблицы не поменяетя. Поэтому бужет единый обработчик.
@@ -159,5 +165,13 @@ emit sig_SendDataFromDB(tableWidget, requestType);
 
     default:
         break;
+    }
+}
+void DataBase::ClearTable()
+{
+    if (tableWidget) {
+        tableWidget->clear();
+        tableWidget->setRowCount(0);
+        tableWidget->setColumnCount(0);
     }
 }

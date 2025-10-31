@@ -48,7 +48,7 @@ public:
     QSqlError GetLastError(void);
     void ConnectToDataBase(QVector<QString> dataForConnect);
 void ReadAnswerFromDB( int answerType );
-
+    void ClearTable();
 signals:
 
    void sig_SendDataFromDB(QTableWidget *tableWg, int typeR);

@@ -6,7 +6,7 @@
 #include <QtConcurrent>
 #include "database.h"
 #include "dbdata.h"
-
+#include <QStandardItemModel>
 
 
 QT_BEGIN_NAMESPACE
@@ -23,7 +23,7 @@ public:
 
 
 public slots:
-    void ScreenDataFromDB(QTableWidget *widget, int typeRequest);
+    void ScreenDataFromDB(QTableWidget *widget);
     void ReceiveStatusConnectionToDB(bool status);
     void ReceiveStatusRequestToDB(QSqlError err);
 
@@ -49,7 +49,7 @@ private:
     QMessageBox* msg;
 QTableWidget *tbWid = nullptr;
     QString request = "SELECT title, description FROM film f JOIN film_category fc on f.film_id = fc.film_id JOIN category c on c.category_id = fc.category_id WHERE c.name = 'Comedy' ('Horror')";
-
+QStandardItemModel *model;
 
 };
 #endif // MAINWINDOW_H
